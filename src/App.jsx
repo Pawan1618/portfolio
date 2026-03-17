@@ -1,6 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
-import { Github, Linkedin, Mail, ExternalLink, Code2, Layers, Cpu, Database, Smartphone, GraduationCap, Trophy, ChevronRight } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code2, Layers, Cpu, Database, Smartphone, GraduationCap, Trophy, ChevronRight, Network, Braces, BrainCircuit, HardDrive, Share2, Server, Menu, X } from 'lucide-react';
+import { 
+  SiCplusplus, SiJavascript, SiTypescript, SiPython, SiDart, 
+  SiReact, SiNextdotjs, SiTailwindcss, SiRedux, SiFramer, 
+  SiFlutter, SiFirebase, SiNodedotjs, SiExpress, SiSupabase, 
+  SiDocker, SiGit, SiGithubactions, SiPostman 
+} from 'react-icons/si';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -16,43 +22,157 @@ const staggerContainer = {
 };
 
 // ----------------------------------------------------
-// AMAZING INTERACTIVE BACKGROUND COMPONENT
+// AMAZING INTERACTIVE BACKGROUND COMPONENT (Upgraded)
 // ----------------------------------------------------
 function InteractiveBackground() {
   const mouseX = useMotionValue(typeof window !== "undefined" ? window.innerWidth / 2 : 0);
   const mouseY = useMotionValue(typeof window !== "undefined" ? window.innerHeight / 2 : 0);
+  const canvasRef = useRef(null);
 
-  const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+  // Slow, smooth, overdamped spring to create a "liquid-like" lingering trail
+  const springX = useSpring(mouseX, { stiffness: 20, damping: 15, mass: 2 });
+  const springY = useSpring(mouseY, { stiffness: 20, damping: 15, mass: 2 });
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    let animationFrameId;
+    let points = [];
+    
+    // Canvas setup for Liquid Memory Trail
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      
+      const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      
+      window.addEventListener("resize", resize);
+      resize();
+
+      const render = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Age all points
+        for (let i = 0; i < points.length; i++) {
+          points[i].age += 1;
+        }
+
+        // Remove dead points (live for 120 frames = ~2 seconds)
+        points = points.filter(p => p.age < 120);
+
+        if (points.length > 1) {
+          ctx.globalCompositeOperation = "screen";
+          
+          for (let i = 1; i < points.length; i++) {
+            const p1 = points[i - 1];
+            const p2 = points[i];
+            
+            const life = 1 - (p1.age / 120);
+            
+            if (life > 0) {
+              // Outer liquid glow (Teal/Cyan trace)
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.lineCap = "round";
+              ctx.lineJoin = "round";
+              
+              ctx.lineWidth = 140 * life; // Massive liquid outer gradient spread
+              ctx.strokeStyle = `rgba(45, 212, 191, ${life * 0.12})`; // Teal-400
+              ctx.stroke();
+
+              // Inner thick liquid core (Violet/Pink)
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.lineWidth = 50 * life;
+              ctx.strokeStyle = `rgba(167, 139, 250, ${life * 0.25})`; // Violet-400
+              ctx.stroke();
+              
+              // Tight brilliant center
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.lineWidth = 15 * life;
+              ctx.strokeStyle = `rgba(244, 114, 182, ${life * 0.4})`; // Pink-400
+              ctx.stroke();
+            }
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(render);
+      };
+
+      render();
+
+      const handleMouseMove = (e) => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+        
+        // Add point with tiny offset randomness to break rigid lines
+        points.push({ 
+          x: e.clientX, 
+          y: e.clientY, 
+          age: 0 
+        });
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+      
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("resize", resize);
+        cancelAnimationFrame(animationFrameId);
+      };
+    }
   }, [mouseX, mouseY]);
 
-  // Spotlight revealing detailed dots around the cursor
-  const spotMask = useMotionTemplate`radial-gradient(400px circle at ${springX}px ${springY}px, black, transparent 80%)`;
-  // Focused intense glow centered on cursor
-  const glowMask = useMotionTemplate`radial-gradient(300px circle at ${springX}px ${springY}px, black, transparent 100%)`;
+  // Spotlight revealing detailed dots around the cursor - tighter & brighter
+  const spotMask = useMotionTemplate`radial-gradient(450px circle at ${springX}px ${springY}px, black, transparent 80%)`;
+  // Focused intense glow centered on cursor - vivid elegant gradient core
+  const glowMask = useMotionTemplate`radial-gradient(350px circle at ${springX}px ${springY}px, black, transparent 100%)`;
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#09090b]">
-      {/* 1. Base dim grid across the whole screen */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#030305]">
+      
+      {/* Dynamic Ambient Breathing Orbs */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+          x: [0, 80, 0],
+          y: [0, -40, 0]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-600/20 blur-[130px]"
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.4, 1],
+          opacity: [0.2, 0.4, 0.2],
+          x: [0, -80, 0],
+          y: [0, 80, 0]
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-pink-600/20 blur-[130px]"
+      />
 
-      {/* 2. Interactive Dot Pattern revealed by Mouse Cursor */}
+      {/* 1. Base dim grid across the whole screen */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-30 mix-blend-overlay" />
+      
+      {/* 2. Liquid Memory Canvas Trail (subtle blurred tail) */}
+      <canvas ref={canvasRef} className="absolute inset-0 z-[1] mix-blend-screen opacity-60 blur-[8px] md:blur-[12px]" />
+
+      {/* 3. Interactive Dot Pattern revealed rapidly by Mouse Cursor */}
       <motion.div 
         className="absolute inset-0 z-10 bg-dot-pattern mix-blend-screen opacity-100"
         style={{ WebkitMaskImage: spotMask, maskImage: spotMask }}
       />
       
-      {/* 3. Intense Ambient Core Cursor Glow */}
+      {/* 4. Extremely Crisp Core Cursor Glow */}
       <motion.div 
-        className="absolute inset-0 z-0 bg-gradient-to-r from-indigo-500/40 to-pink-500/40 mix-blend-color-dodge opacity-100 blur-[80px]"
+        className="absolute inset-0 z-0 bg-gradient-to-r from-indigo-500/70 via-purple-500/70 to-pink-500/70 mix-blend-screen opacity-100 blur-[50px]"
         style={{ WebkitMaskImage: glowMask, maskImage: glowMask }}
       />
     </div>
@@ -113,6 +233,97 @@ function TiltCard({ children, className }) {
 }
 
 // ----------------------------------------------------
+// NAVBAR COMPONENT
+// ----------------------------------------------------
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'Arsenal', href: '#skills' },
+    { name: 'Works', href: '#projects' },
+    { name: 'Journey', href: '#experience' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  return (
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#030305]/80 backdrop-blur-md border-b border-indigo-500/10 shadow-lg shadow-black/50' : 'py-6 bg-transparent'}`}
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center">
+        <a href="#home" className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-400 hover:opacity-80 transition-opacity">
+          PS.
+        </a>
+        
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link, i) => (
+            <a 
+              key={i} 
+              href={link.href} 
+              className="text-sm font-semibold text-zinc-400 hover:text-white transition-colors relative group"
+            >
+              {link.name}
+              <span className="absolute -bottom-1.5 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-400 to-pink-400 transition-all group-hover:w-full"></span>
+            </a>
+          ))}
+          <a href="#contact" className="px-6 py-2.5 text-sm font-bold rounded-full bg-white text-black hover:bg-zinc-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:-translate-y-0.5">
+            Hire Me
+          </a>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="md:hidden text-zinc-400 hover:text-white transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden absolute top-full left-0 right-0 bg-[#030305]/95 backdrop-blur-xl border-b border-indigo-500/10 py-4 px-6 flex flex-col gap-4 shadow-2xl"
+        >
+          {navLinks.map((link, i) => (
+            <a 
+              key={i} 
+              href={link.href} 
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-lg font-medium text-zinc-300 hover:text-white transition-colors py-2 border-b border-white/5"
+            >
+              {link.name}
+            </a>
+          ))}
+          <a 
+            href="#contact" 
+            onClick={() => setMobileMenuOpen(false)}
+            className="mt-2 text-center px-5 py-3 text-sm font-bold rounded-full bg-white text-black hover:bg-zinc-200 transition-colors"
+          >
+            Hire Me
+          </a>
+        </motion.div>
+      )}
+    </motion.nav>
+  );
+}
+
+// ----------------------------------------------------
 // MAIN APP COMPONENT
 // ----------------------------------------------------
 export default function App() {
@@ -121,12 +332,15 @@ export default function App() {
       
       {/* Custom Magic Interactive Background */}
       <InteractiveBackground />
+      
+      <Navbar />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 sm:px-12 sm:py-32">
         
         {/* HERO SECTION */}
         <motion.section 
-          className="min-h-[85vh] flex flex-col justify-center items-start pt-10"
+          id="home"
+          className="min-h-[85vh] flex flex-col justify-center items-start pt-10 scroll-mt-24"
           initial="hidden"
           animate="show"
           variants={staggerContainer}
@@ -166,8 +380,8 @@ export default function App() {
               </a>
             </TiltCard>
             <div className="flex items-center gap-4 ml-4">
-              <TiltCard><SocialLink href="https://github.com/pawansingh" icon={<Github size={24} />} /></TiltCard>
-              <TiltCard><SocialLink href="https://linkedin.com/in/pawansingh" icon={<Linkedin size={24} />} /></TiltCard>
+              <TiltCard><SocialLink href="https://github.com/Pawan1618" icon={<Github size={24} />} /></TiltCard>
+              <TiltCard><SocialLink href="https://www.linkedin.com/in/pawansingh1618/" icon={<Linkedin size={24} />} /></TiltCard>
               <TiltCard><SocialLink href="mailto:Pawan.singh23@lpu.in" icon={<Mail size={24} />} /></TiltCard>
             </div>
           </motion.div>
@@ -175,7 +389,8 @@ export default function App() {
 
         {/* SKILLS SECTION */}
         <motion.section 
-          className="py-32"
+          id="skills"
+          className="py-32 scroll-mt-24"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
@@ -189,18 +404,54 @@ export default function App() {
           </TiltCard>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <TiltCard><SkillNode icon={<Code2 className="text-indigo-400"/>} title="Languages" skills={["C++", "JavaScript", "TypeScript", "Python", "Dart", "SQL"]} /></TiltCard>
-            <TiltCard><SkillNode icon={<Layers className="text-purple-400"/>} title="Frontend" skills={["React 19", "Next.js 16", "Tailwind CSS", "Redux", "Framer"]} /></TiltCard>
-            <TiltCard><SkillNode icon={<Smartphone className="text-pink-400"/>} title="Mobile" skills={["Flutter", "Dart", "Material 3", "Firebase"]} /></TiltCard>
-            <TiltCard><SkillNode icon={<Database className="text-blue-400"/>} title="Backend" skills={["Node.js", "Express", "Firebase", "Supabase", "REST"]} /></TiltCard>
-            <TiltCard><SkillNode icon={<Cpu className="text-emerald-400"/>} title="Tools & DevOps" skills={["Docker", "Git", "GitHub Actions", "Postman"]} /></TiltCard>
-            <TiltCard><SkillNode icon={<Layers className="text-orange-400"/>} title="Core CS Concs." skills={["Data Structures", "Algorithms", "DBMS", "OS", "CN"]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Code2 className="text-indigo-400"/>} title="Languages" skills={[
+              { name: "C++", icon: <SiCplusplus className="text-[#00599C]" /> },
+              { name: "JavaScript", icon: <SiJavascript className="text-[#F7DF1E]" /> },
+              { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
+              { name: "Python", icon: <SiPython className="text-[#3776AB]" /> },
+              { name: "Dart", icon: <SiDart className="text-[#0175C2]" /> },
+              { name: "SQL", icon: <Database className="text-zinc-400" /> }
+            ]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Layers className="text-purple-400"/>} title="Frontend" skills={[
+              { name: "React 19", icon: <SiReact className="text-[#61DAFB]" /> },
+              { name: "Next.js 16", icon: <SiNextdotjs className="text-white" /> },
+              { name: "Tailwind CSS", icon: <SiTailwindcss className="text-[#06B6D4]" /> },
+              { name: "Redux", icon: <SiRedux className="text-[#764ABC]" /> },
+              { name: "Framer", icon: <SiFramer className="text-white" /> }
+            ]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Smartphone className="text-pink-400"/>} title="Mobile" skills={[
+              { name: "Flutter", icon: <SiFlutter className="text-[#02569B]" /> },
+              { name: "Dart", icon: <SiDart className="text-[#0175C2]" /> },
+              { name: "Material 3", icon: <Layers className="text-[#E8F0FE]" /> },
+              { name: "Firebase", icon: <SiFirebase className="text-[#FFCA28]" /> }
+            ]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Database className="text-blue-400"/>} title="Backend" skills={[
+              { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
+              { name: "Express", icon: <SiExpress className="text-white" /> },
+              { name: "Firebase", icon: <SiFirebase className="text-[#FFCA28]" /> },
+              { name: "Supabase", icon: <SiSupabase className="text-[#3ECF8E]" /> },
+              { name: "REST", icon: <Network className="text-zinc-400" /> }
+            ]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Cpu className="text-emerald-400"/>} title="Tools & DevOps" skills={[
+              { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
+              { name: "Git", icon: <SiGit className="text-[#F05032]" /> },
+              { name: "GitHub Actions", icon: <SiGithubactions className="text-[#2088FF]" /> },
+              { name: "Postman", icon: <SiPostman className="text-[#FF6C37]" /> }
+            ]} /></TiltCard>
+            <TiltCard><SkillNode icon={<Layers className="text-orange-400"/>} title="Core CS Concs." skills={[
+              { name: "Data Structures", icon: <Braces className="text-indigo-400" /> },
+              { name: "Algorithms", icon: <BrainCircuit className="text-purple-400" /> },
+              { name: "DBMS", icon: <HardDrive className="text-blue-400" /> },
+              { name: "OS", icon: <Server className="text-emerald-400" /> },
+              { name: "CN", icon: <Share2 className="text-pink-400" /> }
+            ]} /></TiltCard>
           </div>
         </motion.section>
 
         {/* PROJECTS SECTION */}
         <motion.section 
-          className="py-32"
+          id="projects"
+          className="py-32 scroll-mt-24"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
@@ -269,7 +520,8 @@ export default function App() {
 
         {/* EXPERIENCE / EDU / ACHIEVEMENTS */}
         <motion.section 
-          className="py-32"
+          id="experience"
+          className="py-32 scroll-mt-24"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
@@ -348,7 +600,8 @@ export default function App() {
         
         {/* CONTACT SECTION */}
         <motion.section 
-          className="py-32"
+          id="contact"
+          className="py-32 scroll-mt-24"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
@@ -415,8 +668,9 @@ function SkillNode({ icon, title, skills }) {
       </div>
       <div className="flex flex-wrap gap-2" style={{ transform: "translateZ(20px)" }}>
         {skills.map((skill, i) => (
-          <span key={i} className="px-3 py-1.5 text-xs font-medium tracking-wide rounded-lg bg-white/5 text-zinc-300 border border-white/10">
-            {skill}
+          <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium tracking-wide rounded-lg bg-white/5 text-zinc-300 border border-white/10 overflow-hidden group/skill hover:bg-white/10 transition-colors">
+            {skill.icon && <span className="text-[14px] opacity-90 group-hover/skill:opacity-100 group-hover/skill:scale-110 transition-transform duration-300">{skill.icon}</span>}
+            <span>{skill.name || skill}</span>
           </span>
         ))}
       </div>
