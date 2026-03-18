@@ -335,71 +335,82 @@ export default function App() {
       
       <Navbar />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 sm:px-12 sm:py-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-8 sm:px-12 sm:pt-24 sm:pb-8">
         
         {/* HERO SECTION */}
         <motion.section 
           id="home"
-          className="min-h-[85vh] flex flex-col justify-center items-start pt-10 scroll-mt-24"
+          className="flex flex-col md:flex-row items-center justify-between gap-6 py-6 scroll-mt-24 mt-4"
           initial="hidden"
           animate="show"
           variants={staggerContainer}
         >
-          <TiltCard>
-            <motion.div variants={fadeIn} className="mb-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-panel border-white/10 text-sm font-medium text-indigo-300 backdrop-blur-md">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
-              </span>
-              Available for new projects & roles
-            </motion.div>
-          </TiltCard>
-
-          <TiltCard>
-            <motion.h1 
-              variants={fadeIn}
-              className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tight text-white mb-6 leading-[1.1] drop-shadow-2xl"
-            >
-              Hi, I'm <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                Pawan Singh.
-              </span>
-            </motion.h1>
-          </TiltCard>
-
-          <TiltCard>
-            <motion.p variants={fadeIn} className="text-lg sm:text-xl md:text-2xl text-zinc-400 max-w-3xl leading-relaxed mb-12 font-light drop-shadow-md">
-              A passionate Full-Stack Software Engineer building scalable, intuitive, and modern digital experiences. Specializing in <span className="text-white font-medium">React</span>, <span className="text-white font-medium">Next.js</span>, and <span className="text-white font-medium">Flutter</span>.
-            </motion.p>
-          </TiltCard>
-
-          <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-5">
+          <div className="flex-1 flex flex-col justify-center items-start self-stretch">
             <TiltCard>
-              <a href="mailto:Pawan.singh23@lpu.in" className="inline-block px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-zinc-200 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-                Get In Touch
-              </a>
+              <motion.div variants={fadeIn} className="mb-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-panel border-white/10 text-sm font-medium text-indigo-300 backdrop-blur-md">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+                </span>
+                Available for new projects & roles
+              </motion.div>
             </TiltCard>
-            <div className="flex items-center gap-4 ml-4">
-              <TiltCard><SocialLink href="https://github.com/Pawan1618" icon={<Github size={24} />} /></TiltCard>
-              <TiltCard><SocialLink href="https://www.linkedin.com/in/pawansingh1618/" icon={<Linkedin size={24} />} /></TiltCard>
-              <TiltCard><SocialLink href="mailto:Pawan.singh23@lpu.in" icon={<Mail size={24} />} /></TiltCard>
-            </div>
-          </motion.div>
+
+            <TiltCard>
+              <motion.h1 
+                variants={fadeIn}
+                className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tight text-white mb-4 leading-[1.1] drop-shadow-2xl"
+              >
+                Hi, I'm <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                  Pawan Singh.
+                </span>
+              </motion.h1>
+            </TiltCard>
+
+            <TiltCard>
+              <motion.p variants={fadeIn} className="text-base sm:text-lg md:text-xl text-zinc-400 max-w-3xl leading-relaxed mb-8 font-light drop-shadow-md">
+                A passionate Full-Stack Software Engineer building scalable, intuitive, and modern digital experiences. Specializing in <span className="text-white font-medium">React</span>, <span className="text-white font-medium">Next.js</span>, and <span className="text-white font-medium">Flutter</span>.
+              </motion.p>
+            </TiltCard>
+
+            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-5 relative z-20">
+              <TiltCard>
+                <a href="mailto:Pawan.singh23@lpu.in" className="inline-block px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-zinc-200 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                  Get In Touch
+                </a>
+              </TiltCard>
+              <div className="flex items-center gap-4 ml-4">
+                <TiltCard><SocialLink href="https://github.com/Pawan1618" icon={<Github size={24} />} /></TiltCard>
+                <TiltCard><SocialLink href="https://www.linkedin.com/in/pawansingh1618/" icon={<Linkedin size={24} />} /></TiltCard>
+                <TiltCard><SocialLink href="mailto:Pawan.singh23@lpu.in" icon={<Mail size={24} />} /></TiltCard>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="flex-1 flex justify-center md:justify-end items-center w-full relative z-10 pt-10 md:pt-0">
+            <TiltCard className="inline-block">
+              <motion.div variants={fadeIn} className="relative w-64 h-64 md:w-80 md:h-80 lg:w-[22rem] lg:h-[22rem] rounded-full p-2 glass-card bg-gradient-to-tr from-indigo-500/20 to-pink-500/20 shadow-[0_0_40px_rgba(99,102,241,0.2)] group">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500/30 to-pink-500/30 blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <img src="/images/pic.png" alt="Pawan Singh" className="relative z-10 w-full h-full object-cover rounded-full border border-white/10 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500" />
+              </motion.div>
+            </TiltCard>
+          </div>
         </motion.section>
 
         {/* SKILLS SECTION */}
         <motion.section 
           id="skills"
-          className="py-32 scroll-mt-24"
+          className="py-4 md:py-6 scroll-mt-20 mt-8"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
           <TiltCard>
-            <motion.div variants={fadeIn} className="flex flex-col gap-2 mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-lg">Technical Arsenal</h2>
-              <div className="h-1.5 w-24 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mt-2 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+            <motion.div variants={fadeIn} className="flex flex-col gap-1 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">Technical Arsenal</h2>
+              <div className="h-1.5 w-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mt-1 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
             </motion.div>
           </TiltCard>
 
@@ -451,20 +462,20 @@ export default function App() {
         {/* PROJECTS SECTION */}
         <motion.section 
           id="projects"
-          className="py-32 scroll-mt-24"
+          className="py-4 md:py-6 scroll-mt-20"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
           <TiltCard>
-            <motion.div variants={fadeIn} className="flex flex-col gap-2 mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-lg">Selected Works</h2>
-              <div className="h-1.5 w-24 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full mt-2 shadow-[0_0_15px_rgba(236,72,153,0.5)]"></div>
+            <motion.div variants={fadeIn} className="flex flex-col gap-1 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">Selected Works</h2>
+              <div className="h-1.5 w-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full mt-1 shadow-[0_0_15px_rgba(236,72,153,0.5)]"></div>
             </motion.div>
           </TiltCard>
 
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-6">
             <TiltCard>
               <ProjectCase 
                 title="Nutrition Tracker"
@@ -521,20 +532,20 @@ export default function App() {
         {/* EXPERIENCE / EDU / ACHIEVEMENTS */}
         <motion.section 
           id="experience"
-          className="py-32 scroll-mt-24"
+          className="py-4 md:py-6 scroll-mt-20"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Education */}
             <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <TiltCard>
-                <motion.div variants={fadeIn} className="flex items-center gap-4 mb-10">
-                  <div className="p-3 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                    <GraduationCap size={28} />
+                <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                    <GraduationCap size={24} />
                   </div>
-                  <h3 className="text-3xl font-bold text-white drop-shadow-md">Education</h3>
+                  <h3 className="text-2xl font-bold text-white drop-shadow-md">Education</h3>
                 </motion.div>
               </TiltCard>
               
@@ -566,11 +577,11 @@ export default function App() {
             {/* Achievements */}
             <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
                <TiltCard>
-                <motion.div variants={fadeIn} className="flex items-center gap-4 mb-10">
-                  <div className="p-3 rounded-2xl bg-pink-500/10 text-pink-400 border border-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
-                    <Trophy size={28} />
+                <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 rounded-2xl bg-pink-500/10 text-pink-400 border border-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+                    <Trophy size={24} />
                   </div>
-                  <h3 className="text-3xl font-bold text-white drop-shadow-md">Milestones</h3>
+                  <h3 className="text-2xl font-bold text-white drop-shadow-md">Milestones</h3>
                 </motion.div>
                </TiltCard>
 
@@ -601,7 +612,7 @@ export default function App() {
         {/* CONTACT SECTION */}
         <motion.section 
           id="contact"
-          className="py-32 scroll-mt-24"
+          className="py-4 md:py-6 scroll-mt-20"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
