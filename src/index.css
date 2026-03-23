@@ -40,7 +40,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 
     0 8px 32px 0 rgba(0, 0, 0, 0.5),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-  transform-style: preserve-3d;
 }
 
 .glass-card {
@@ -53,18 +52,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 
     0 8px 24px 0 rgba(0, 0, 0, 0.4),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-}
-
-.glass-card:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(45, 45, 50, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 
-    0 16px 48px 0 rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Background Patterns */
@@ -96,3 +83,35 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+/* Light Theme Overrides */
+body.light-theme {
+  background-color: #f4f4f5 !important;
+  color: #18181b !important;
+}
+body.light-theme .bg-\[\#09090b\], body.light-theme .bg-\[\#030305\] { background-color: #f4f4f5 !important; }
+body.light-theme .bg-\[\#030305\]\/80 { background-color: rgba(244, 244, 245, 0.8) !important; }
+body.light-theme .bg-\[\#030305\]\/95 { background-color: rgba(244, 244, 245, 0.95) !important; }
+body.light-theme .text-white { color: #18181b !important; }
+body.light-theme .text-zinc-400 { color: #52525b !important; }
+body.light-theme .text-zinc-300 { color: #3f3f46 !important; }
+body.light-theme .text-zinc-100 { color: #27272a !important; }
+body.light-theme .text-gray-200 { color: #27272a !important; }
+body.light-theme .glass-card, body.light-theme .glass-panel {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+body.light-theme .border-white\/10, body.light-theme .border-white\/20, body.light-theme .border-indigo-500\/20, body.light-theme .border-pink-500\/20 { border-color: rgba(0, 0, 0, 0.1) !important; }
+body.light-theme .border-white\/5 { border-color: rgba(0, 0, 0, 0.05) !important; }
+body.light-theme .bg-white\/5 { background-color: rgba(0, 0, 0, 0.04) !important; }
+body.light-theme .bg-white { background-color: #18181b !important; color: #ffffff !important; }
+body.light-theme .text-black { color: #ffffff !important; text-shadow: none !important; }
+body.light-theme .bg-\[\#000000\] { background-color: #ffffff !important; }
+body.light-theme .shadow-\[0_0_15px_rgba\(255\,255\,255\,0\.2\)\] { box-shadow: 0 0 15px rgba(0,0,0,0.2) !important; }
+body.light-theme .shadow-\[0_0_40px_rgba\(255\,255\,255\,0\.2\)\] { box-shadow: 0 0 40px rgba(0,0,0,0.2) !important; }
+body.light-theme .shadow-\[0_0_30px_rgba\(255\,255\,255\,0\.2\)\] { box-shadow: 0 0 30px rgba(0,0,0,0.2) !important; }
+
+/* In light mode, reverse the glow lines so they are dark shadows */
+body.light-theme .shadow-\[0_0_15px_rgba\(99\,102\,241\,0\.5\)\] { box-shadow: 0 0 15px rgba(99,102,241,0.5) !important; }
+body.light-theme .shadow-\[0_0_15px_rgba\(236\,72\,153\,0\.5\)\] { box-shadow: 0 0 15px rgba(236,72,153,0.5) !important; }
