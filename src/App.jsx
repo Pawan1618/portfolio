@@ -288,10 +288,11 @@ function Navbar() {
 
  const navLinks = [
  { name: 'Home', href: '#home' },
+ { name: 'About', href: '#about' },
  { name: 'Arsenal', href: '#skills' },
  { name: 'Works', href: '#projects' },
  { name: 'Certificates', href: '#certifications' },
- { name: 'Journey', href: '#experience' },
+ { name: 'Milestones', href: '#experience' },
  { name: 'Contact', href: '#contact' },
  ];
 
@@ -436,11 +437,80 @@ export default function App() {
  </motion.div>
  </TiltCard>
  </div>
- </motion.section>
+  </motion.section>
 
- {/* SKILLS SECTION */}
- <motion.section 
- id="skills"
+  {/* ABOUT & EDUCATION SECTION */}
+  <motion.section 
+  id="about"
+  className="py-4 md:py-6 scroll-mt-20 mt-8"
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, margin: "-100px" }}
+  variants={staggerContainer}
+  >
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+  {/* About Me */}
+  <motion.div variants={fadeIn} className="flex flex-col justify-center">
+  <TiltCard>
+  <div className="flex flex-col gap-1 mb-6">
+  <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">About Me</h2>
+  <div className="h-1.5 w-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mt-1 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+  </div>
+  </TiltCard>
+  <TiltCard className="h-full">
+  <div className="glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden shadow-xl shadow-indigo-500/5 border border-white/5 h-full">
+    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-pink-500/5 pointer-events-none" />
+    <p className="text-zinc-300 text-lg leading-relaxed font-medium mb-6 relative z-10">
+      Hello! I'm <span className="text-white font-bold">Pawan Singh</span>. I am an engineer driven by relentless curiosity and a passion for solving intricate puzzles. For me, development isn't just about writing code—it's about architecting digital systems that are as elegant underneath as they are visually arresting on the surface.
+    </p>
+    <p className="text-zinc-300 text-lg leading-relaxed font-medium relative z-10">
+      When I'm not designing dynamic web applications or cross-platform mobile experiences, you can usually find me grinding through competitive programming hurdles or exploring the incredible world of Generative AI. I believe that integrating strong underlying computer science fundamentals with cutting-edge modern tools is the key to building the future.
+    </p>
+  </div>
+  </TiltCard>
+  </motion.div>
+
+  {/* Education */}
+  <motion.div variants={fadeIn}>
+  <TiltCard>
+  <div className="flex items-center gap-3 mb-6">
+  <div className="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+  <GraduationCap size={24} />
+  </div>
+  <h3 className="text-2xl font-bold text-white drop-shadow-md">Education</h3>
+  </div>
+  </TiltCard>
+  
+  <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.2rem] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/20 before:to-transparent">
+  <TimelineItem 
+  title="B.Tech - CSE"
+  subtitle="Lovely Professional University"
+  date="2023 - Present"
+  grade="CGPA: 8.1"
+  alignRight={false}
+  />
+  <TimelineItem 
+  title="Intermediate"
+  subtitle="Swami Prakashanand Sen. Sec."
+  date="2022 - 2023"
+  grade="80%"
+  alignRight={true}
+  />
+  <TimelineItem 
+  title="Matriculation"
+  subtitle="Imperial Public School"
+  date="2019 - 2020"
+  grade="90.8%"
+  alignRight={false}
+  />
+  </div>
+  </motion.div>
+  </div>
+  </motion.section>
+
+  {/* SKILLS SECTION */}
+  <motion.section 
+  id="skills"
  className="py-4 md:py-6 scroll-mt-20 mt-8"
  initial="hidden"
  whileInView="show"
@@ -616,80 +686,37 @@ export default function App() {
   </div>
   </motion.section>
 
-  {/* EXPERIENCE / EDU / ACHIEVEMENTS */}
- <motion.section 
- id="experience"
- className="py-4 md:py-6 scroll-mt-20"
- initial="hidden"
- whileInView="show"
- viewport={{ once: true, margin: "-100px" }}
- >
- <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
- {/* Education */}
- <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
- <TiltCard>
- <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4">
- <div className="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
- <GraduationCap size={24} />
- </div>
- <h3 className="text-2xl font-bold text-white drop-shadow-md">Education</h3>
- </motion.div>
- </TiltCard>
- 
- <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.2rem] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/20 before:to-transparent">
- <TimelineItem 
- title="B.Tech - CSE"
- subtitle="Lovely Professional University"
- date="2023 - Present"
- grade="CGPA: 8.1"
- alignRight={false}
- />
- <TimelineItem 
- title="Intermediate"
- subtitle="Swami Prakashanand Sen. Sec."
- date="2022 - 2023"
- grade="80%"
- alignRight={true}
- />
- <TimelineItem 
- title="Matriculation"
- subtitle="Imperial Public School"
- date="2019 - 2020"
- grade="90.8%"
- alignRight={false}
- />
- </div>
- </motion.div>
+  {/* MILESTONES SECTION */}
+  <motion.section 
+  id="experience"
+  className="py-4 md:py-6 scroll-mt-20 mt-8"
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, margin: "-100px" }}
+  variants={staggerContainer}
+  >
+  <TiltCard>
+  <motion.div variants={fadeIn} className="flex flex-col gap-1 mb-6">
+  <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">Key Milestones</h2>
+  <div className="h-1.5 w-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full mt-1 shadow-[0_0_15px_rgba(236,72,153,0.5)]"></div>
+  </motion.div>
+  </TiltCard>
 
- {/* Achievements */}
- <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
- <TiltCard>
- <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4">
- <div className="p-2.5 rounded-2xl bg-pink-500/10 text-pink-400 border border-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
- <Trophy size={24} />
- </div>
- <h3 className="text-2xl font-bold text-white drop-shadow-md">Milestones</h3>
- </motion.div>
- </TiltCard>
-
- <div className="space-y-6">
- <TiltCard>
- <MilestoneCard 
- title="Problem Solving Excellence"
- desc="Solved 500+ coding problems across LeetCode, GFG & Codeforces. Earned top badges on LeetCode and HackerRank."
- />
- </TiltCard>
- <TiltCard>
- <MilestoneCard 
- title="Competitive Programming"
- desc="Reached a peak LeetCode contest rating of 1415, demonstrating strong algorithm intuition under time constraints."
- />
- </TiltCard>
-
- </div>
- </motion.div>
- </div>
- </motion.section>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <TiltCard className="h-full">
+  <MilestoneCard 
+  title="Problem Solving Excellence"
+  desc="Solved 500+ coding problems across LeetCode, GFG & Codeforces. Earned top badges on LeetCode and HackerRank."
+  />
+  </TiltCard>
+  <TiltCard className="h-full">
+  <MilestoneCard 
+  title="Competitive Programming"
+  desc="Reached a peak LeetCode contest rating of 1415, demonstrating strong algorithm intuition under time constraints."
+  />
+  </TiltCard>
+  </div>
+  </motion.section>
  
  {/* CONTACT SECTION */}
  <motion.section 
