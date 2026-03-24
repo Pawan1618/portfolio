@@ -210,10 +210,10 @@ function TiltCard({ children, className = "" }) {
     <motion.div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02, zIndex: 50 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: "1000px" }}
-      className={className}
+      className={`relative ${className}`}
     >
       <div 
         style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} 
@@ -527,7 +527,7 @@ export default function App() {
  </motion.div>
  </TiltCard>
 
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
  <TiltCard><SkillNode icon={<Code2 className="text-indigo-400"/>} title="Languages" skills={[
  { name: "C++", icon: <SiCplusplus className="text-[#00599C]" /> },
  { name: "JavaScript", icon: <SiJavascript className="text-[#F7DF1E]" /> },
@@ -588,7 +588,7 @@ export default function App() {
  </motion.div>
  </TiltCard>
 
- <div className="flex flex-col gap-6">
+ <div className="flex flex-col gap-10">
  <TiltCard>
  <ProjectCase 
  title="Nutrition Tracker"
@@ -658,7 +658,7 @@ export default function App() {
   </motion.div>
   </TiltCard>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
   <TiltCard className="h-full">
    <CertificateCard 
    title="Master Generative AI & Tools"
@@ -705,7 +705,7 @@ export default function App() {
   </motion.div>
   </TiltCard>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
   <TiltCard className="h-full">
   <MilestoneCard 
   title="Problem Solving Excellence"
@@ -737,7 +737,7 @@ export default function App() {
   </motion.div>
   </TiltCard>
 
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
   {/* LeetCode Stats */}
   <TiltCard className="h-full">
   <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden shadow-xl shadow-amber-500/5 border border-white/5 h-full flex flex-col group">
