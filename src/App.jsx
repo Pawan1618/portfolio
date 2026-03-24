@@ -24,7 +24,7 @@ const staggerContainer = {
 // ----------------------------------------------------
 // AMAZING INTERACTIVE BACKGROUND COMPONENT (Upgraded)
 // ----------------------------------------------------
-function InteractiveBackground() {
+function InteractiveBackground({ theme }) {
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
   const isHovering = useMotionValue(0);
@@ -135,12 +135,12 @@ function InteractiveBackground() {
 
       {/* Trailing Crosshair */}
       <motion.div
-        className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9998] hidden md:block transition-colors duration-300 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
+        className={`fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9998] hidden md:block transition-colors duration-300 drop-shadow-[0_0_8px_${theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.5)'}]`}
         style={{
           x: useTransform(smoothX, v => (v * (typeof window !== 'undefined' ? window.innerWidth : 1000)) - 24),
           y: useTransform(smoothY, v => (v * (typeof window !== 'undefined' ? window.innerHeight : 1000)) - 24),
           scale: useTransform(hoverSpring, [0, 1], [1, 0.8]),
-          color: useTransform(hoverSpring, [0, 1], ["rgba(255, 255, 255, 0.8)", "rgba(236, 72, 153, 1)"])
+          color: useTransform(hoverSpring, [0, 1], [theme === 'light' ? "rgba(24, 24, 27, 0.6)" : "rgba(255, 255, 255, 0.8)", "rgba(236, 72, 153, 1)"])
         }}
       >
         <svg viewBox="0 0 100 100" className="w-full h-full" stroke="currentColor" strokeWidth="2.5" fill="none">
@@ -262,29 +262,17 @@ function TiltCard({ children, className = "" }) {
 // ----------------------------------------------------
 // NAVBAR COMPONENT
 // ----------------------------------------------------
-function Navbar() {
+function Navbar({ theme, toggleTheme }) {
  const [scrolled, setScrolled] = useState(false);
  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
- const [theme, setTheme] = useState('dark');
 
  useEffect(() => {
-   setTheme(document.body.classList.contains('light-theme') ? 'light' : 'dark');
    const handleScroll = () => {
      setScrolled(window.scrollY > 50);
    };
    window.addEventListener('scroll', handleScroll);
    return () => window.removeEventListener('scroll', handleScroll);
  }, []);
-
- const toggleTheme = () => {
-   const newTheme = theme === 'dark' ? 'light' : 'dark';
-   if (newTheme === 'light') {
-     document.body.classList.add('light-theme');
-   } else {
-     document.body.classList.remove('light-theme');
-   }
-   setTheme(newTheme);
- };
 
  const navLinks = [
  { name: 'Home', href: '#home' },
@@ -367,14 +355,29 @@ function Navbar() {
 // ----------------------------------------------------
 export default function App() {
  const [showResume, setShowResume] = useState(false);
+ const [theme, setTheme] = useState('dark');
+
+ useEffect(() => {
+   setTheme(document.body.classList.contains('light-theme') ? 'light' : 'dark');
+ }, []);
+
+ const toggleTheme = () => {
+   const newTheme = theme === 'dark' ? 'light' : 'dark';
+   if (newTheme === 'light') {
+     document.body.classList.add('light-theme');
+   } else {
+     document.body.classList.remove('light-theme');
+   }
+   setTheme(newTheme);
+ };
 
  return (
  <div className="relative min-h-screen overflow-hidden selection:bg-indigo-500/30">
  
  {/* Custom Magic Interactive Background */}
- <InteractiveBackground />
+ <InteractiveBackground key={theme} theme={theme} />
  
- <Navbar />
+ <Navbar theme={theme} toggleTheme={toggleTheme} />
 
  <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-8 sm:px-12 sm:pt-24 sm:pb-8">
  
@@ -714,6 +717,94 @@ export default function App() {
   title="Competitive Programming"
   desc="Reached a peak LeetCode contest rating of 1415, demonstrating strong algorithm intuition under time constraints."
   />
+  </TiltCard>
+  </div>
+  </motion.section>
+
+  {/* CODING PROFILES SECTION */}
+  <motion.section 
+  id="stats"
+  className="py-4 md:py-6 scroll-mt-20 mt-8"
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, margin: "-100px" }}
+  variants={staggerContainer}
+  >
+  <TiltCard>
+  <motion.div variants={fadeIn} className="flex flex-col gap-1 mb-6">
+  <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">Coding Profiles</h2>
+  <div className="h-1.5 w-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mt-1 shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
+  </motion.div>
+  </TiltCard>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  {/* LeetCode Stats */}
+  <TiltCard className="h-full">
+  <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden shadow-xl shadow-amber-500/5 border border-white/5 h-full flex flex-col group">
+    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-orange-500/5 pointer-events-none group-hover:from-amber-500/10 group-hover:to-orange-500/10 transition-colors duration-700" />
+    
+    <div className="flex items-center gap-3 mb-6 relative z-10">
+      <div className="p-2.5 rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+        <Code2 size={24} />
+      </div>
+      <h3 className="text-2xl font-bold text-white drop-shadow-md">LeetCode Stats</h3>
+      <a href="https://leetcode.com/u/pawansinghshiva2030/" target="_blank" rel="noreferrer" className="ml-auto p-2 rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
+        <ExternalLink size={18} />
+      </a>
+    </div>
+
+    <div className="flex-1 flex flex-col items-center justify-center relative z-10">
+       <div className={`w-full rounded-xl p-2 border shadow-inner ${theme === 'light' ? 'bg-zinc-100 border-black/5' : 'bg-black/20 border-white/5'}`}>
+         <img 
+           src={`https://leetcard.jacoblin.cool/pawansinghshiva2030?theme=${theme === 'light' ? 'light' : 'dark'}&font=Inter&ext=activity`} 
+           alt="LeetCode Profile" 
+           className="w-full h-auto object-contain rounded-lg transition-transform duration-500 group-hover:scale-[1.02]"
+         />
+       </div>
+    </div>
+  </div>
+  </TiltCard>
+
+  {/* GitHub Stats */}
+  <TiltCard className="h-full">
+  <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden shadow-xl shadow-purple-500/5 border border-white/5 h-full flex flex-col group">
+    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-pink-500/5 pointer-events-none group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-colors duration-700" />
+    
+    <div className="flex items-center gap-3 mb-6 relative z-10">
+      <div className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+        <Github size={24} />
+      </div>
+      <h3 className="text-2xl font-bold text-white drop-shadow-md">GitHub Activity</h3>
+      <a href="https://github.com/Pawan1618" target="_blank" rel="noreferrer" className="ml-auto p-2 rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
+        <ExternalLink size={18} />
+      </a>
+    </div>
+
+    <div className="flex-1 flex flex-col gap-4 relative z-10 justify-center">
+       <div className={`w-full rounded-xl p-2 border shadow-inner ${theme === 'light' ? 'bg-zinc-100 border-black/5' : 'bg-black/20 border-white/5'}`}>
+         <img 
+           src={`https://github-readme-stats.vercel.app/api?username=Pawan1618&show_icons=true&theme=transparent&title_color=${theme === 'light' ? '18181b' : 'fff'}&text_color=${theme === 'light' ? '52525b' : '94a3b8'}&icon_color=a855f7&hide_border=true&bg_color=00000000`} 
+           alt="GitHub Stats" 
+           className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+         />
+       </div>
+       
+       <div className={`w-full rounded-xl p-4 border shadow-inner hidden sm:flex flex-col items-center group/heatmap relative ${theme === 'light' ? 'bg-zinc-100 border-black/5' : 'bg-[#0d1117]/80 border-white/5'}`}>
+          <p className="text-xs font-semibold text-zinc-400 mb-3 w-full text-left uppercase tracking-wider flex items-center justify-between">
+            <span>Contribution Heatmap</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded opacity-0 group-hover/heatmap:opacity-100 transition-opacity ${theme === 'light' ? 'bg-black/5 text-black/50' : 'bg-white/10 text-white/50'}`}>Auto-updating</span>
+          </p>
+          <div className="w-full overflow-hidden flex justify-center">
+            <img 
+              src="https://ghchart.rshah.org/8b5cf6/Pawan1618" 
+              alt="GitHub Contribution Heatmap" 
+              className={`w-full max-w-full h-auto object-contain transition-transform duration-500 group-hover/heatmap:scale-[1.02] ${theme === 'light' ? 'mix-blend-multiply opacity-80' : 'mix-blend-screen opacity-100'}`}
+              style={{ filter: theme === 'light' ? "none" : "invert(1) hue-rotate(180deg) saturate(1.5) contrast(1.2)" }}
+            />
+          </div>
+       </div>
+    </div>
+  </div>
   </TiltCard>
   </div>
   </motion.section>
